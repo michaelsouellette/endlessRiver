@@ -14,12 +14,12 @@ jQuery.fn.endlessRiver = function (settings) {
 			margin: "0 !important",
 			padding: "0 !important"
 		});
-        var currentSpazio,currentTempo;
+        var currentSpace,currentTime;
         var run = true;
         var initialOffset = $line.offset().left;
 		var lineWidth = 1;
         $line.children("li.tick-clones").remove();
-		//elimina cloni se ci sono - Serve in caso io aggiorni dinamicamente il contenuto
+		//eliminates clones if there are - Serves in case I dynamically update the content
         $line.addClass("newsticker");
         var $mask = $line.wrap("<div class='mask'></div>");
         var $tickercontainer = $line.parent().wrap("<div class='tickercontainer'></div>");
@@ -32,7 +32,7 @@ jQuery.fn.endlessRiver = function (settings) {
 			$line.append(elements.clone(true).addClass("tick-clones"));
 			$line.children("li").each(function (i) {
 				lineWidth += j(this, i).outerWidth(true);
-				//outherWidth con argomento true ritorna larghezza compresi margini
+				//outherWidth with true argument returns width including the edge
 			});
 			
 		}
@@ -40,21 +40,21 @@ jQuery.fn.endlessRiver = function (settings) {
 		while(lineWidth<l) fill();
 		$line.width(lineWidth);
         $line.height($line.parent().height());
-        function scrollnews(spazio, tempo) {
-            $line.animate({left: '-=' + spazio}, tempo, "linear", function () {
+        function scrollnews(space, time) {
+            $line.animate({left: '-=' + space}, time, "linear", function () {
                 $line.children("li:first").appendTo($line);
                 $line.css("left", 0);
-                currentSpazio = $line.children("li:first").outerWidth(true);
-                currentTempo = tempo / spazio * currentSpazio;
+                currentSpace = $line.children("li:first").outerWidth(true);
+                currentTime = time / space * currentSpace;
                 if(run)
-                	scrollnews(currentSpazio, currentTempo);
+                	scrollnews(currentSpace, currentTime);
             });
         }
         //BOOT
-        currentSpazio = $line.children("li:first").outerWidth(true);
-        currentTempo = currentSpazio / settings.speed * 1000;
-        //x 1000 perchè tempo è in millisecondi
-        scrollnews(currentSpazio, currentTempo);
+        currentSpace = $line.children("li:first").outerWidth(true);
+        currentTime = currentSpace / settings.speed * 1000;
+        //x 1000 because time is in milliseconds
+        scrollnews(currentSpace, currentTime);
 		function setHover(){
 			$line.off( "mouseenter mouseleave" );
 			$line.hover(pause,resume);
@@ -71,7 +71,7 @@ jQuery.fn.endlessRiver = function (settings) {
 			run = true;
 			var offset = $line.offset().left;
 			var residualSpace = offset + $line.children("li:first").outerWidth(true) - initialOffset;
-			var residualTime = currentTempo / currentSpazio * residualSpace;
+			var residualTime = currentTime / currentSpace * residualSpace;
 			scrollnews(residualSpace, residualTime);
 		}
 		if(settings.pause) setHover();
@@ -99,7 +99,7 @@ jQuery.fn.endlessRiver = function (settings) {
 				setHover();
 				var offset = $line.offset().left;
 				var residualSpace = offset + $line.children("li:first").outerWidth(true) - initialOffset;
-				var residualTime = currentTempo / currentSpazio * residualSpace;
+				var residualTime = currentTime / currentSpace * residualSpace;
 				scrollnews(residualSpace, residualTime);
 			});
 
@@ -112,10 +112,10 @@ jQuery.fn.endlessRiver = function (settings) {
 					return;
 				}
 				if(moving) return false;
-				var spazio = $line.children("li:first").outerWidth(true);
-        		var tempo = spazio / settings.speed * 1000;
+				var space = $line.children("li:first").outerWidth(true);
+        		var time = space / settings.speed * 1000;
         		moving = true;
-				$line.stop(true,true).animate({left: '-=' + spazio}, tempo, "linear", function () {
+				$line.stop(true,true).animate({left: '-=' + space}, time, "linear", function () {
                 	$line.children("li:first").appendTo($line);
                 	$line.css("left", 0);
                 	moving = false;
@@ -130,12 +130,12 @@ jQuery.fn.endlessRiver = function (settings) {
 					return;
 				} 
 				if(moving) return false;
-				var spazio = $line.children("li:last").outerWidth(true);
-				$line.css("left", "-"+spazio+"px");
+				var space = $line.children("li:last").outerWidth(true);
+				$line.css("left", "-"+space+"px");
 				$line.children("li:last").prependTo($line);
-        		var tempo = spazio / settings.speed * 1000;
+        		var time = space / settings.speed * 1000;
         		moving = true;
-				$line.stop(true,true).animate({left: '+=' + spazio}, tempo, "linear", function(){
+				$line.stop(true,true).animate({left: '+=' + space}, time, "linear", function(){
 					moving = false;
 				});
 				
